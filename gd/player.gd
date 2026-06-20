@@ -109,7 +109,9 @@ func _physics_process(delta: float) -> void:
 	elif is_on_floor(): was_on_wall = false
 	if velocity.y > fallspeed_cap: velocity.y = fallspeed_cap
 # Coyote Timing
-	if is_on_floor() or is_on_wall(): coyoteTime.start()
+	if is_on_floor() or is_on_wall():
+		if not can_stick and is_on_wall_only(): pass
+		else: coyoteTime.start()
 	can_jump = coyoteTime.time_left != 0 and velocity.y >= 0 and sprite.visible
 # Super Jump
 	if charge_Jump == 0.75:
