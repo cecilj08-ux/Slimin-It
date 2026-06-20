@@ -9,7 +9,7 @@ var total_collisions := 0
 func _ready() -> void: if activates and activates is Door: activates.has_activator = true
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if (body is Player and body.new_scale >= scale) or ((body is Enemy or body is Crate) and body.scale >= scale):
+	if ((body is Player or body is Enemy) and body.new_scale >= scale) or (body is Crate and body.scale >= scale):
 		total_collisions += 1
 		pressed = true
 		#set_collision_layer_value(1, false)

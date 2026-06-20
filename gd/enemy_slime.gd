@@ -7,6 +7,7 @@ extends Enemy
 @onready var eatParticles := $eatParticles
 @onready var bleedParticles := $bleedParticles
 @onready var fallParticles := $fallParticles
+@onready var new_scale := scale # NOTE: Use this instead of scale for calculations
 
 var direction := 0.0
 var lerpWeight : = 0.0
@@ -22,9 +23,42 @@ func emit_particle(particle: GPUParticles2D) -> void:
 	emitted_particles.restart()
 	await emitted_particles.finished
 	emitted_particles.queue_free()
+	
+func calculate_vector_areas(original: Vector2, added: Vector2, subtract := false) -> Vector2:
+	var original_area = original.x*original.y
+	var added_area = added.x*added.y
+	if subtract: added_area *= -1
+	return Vector2(sqrt(original_area+added_area), sqrt(original_area+added_area))
 
-func _ready() -> void:
-	detection.shape.radius = detection_range
+func death(cause = "unspecified") -> void:
+	dead = true
+	set_collision_layer_value(5, false)
+	sprite.visible = false
+	can_jump = false
+	velocity = Vector2.ZERO
+	eatParticles.amount = round(8*scale.x)
+	fallParticles.amount = round(8*scale.x)
+	if cause is Player: emit_particle(eatParticles)
+	elif cause == "fall": emit_particle(fallParticles)
+	elif cause == "small":
+		bleedParticles.emitting = false
+		emit_particle(eatParticles)
+	else: emit_particle(eatParticles)
+	await get_tree().create_timer(3).timeout
+	queue_free()
+
+func spike_1() -> void:
+	if new_scale != Vector2(0,0):
+		if new_scale.x <= sqrt(3):
+			new_scale = calculate_vector_areas(new_scale, Vector2.ONE, true)
+			new_scale.x = sqrt(round(new_scale.x**2))
+			new_scale.y = sqrt(round(new_scale.y**2))
+		else:
+			new_scale = calculate_vector_areas(new_scale,new_scale-Vector2.ONE, true)
+			new_scale.x = sqrt(floor(new_scale.x**2))
+			new_scale.y = sqrt(floor(new_scale.y**2))
+
+func _ready() -> void: detection.shape.radius = detection_range
 
 func _physics_process(delta: float) -> void:
 	apply_gravity(delta)
@@ -56,10 +90,20 @@ func _physics_process(delta: float) -> void:
 	lerpWeight = delta*(acceleration if direction else friction)
 	velocity.x = lerp(velocity.x, direction*speed, lerpWeight)
 	move_and_slide()
+# Size scaling
+	if new_scale != scale: scale = scale.move_toward(new_scale, delta)
+	if scale <= Vector2(0.25,0.25) and not dead: death("small")
 
 func _on_enemy_hitbox_body_entered(body: Node2D) -> void:
-	if body is TileMapLayer and body.name == "spikes":
-		emit_particle(eatParticles)
+	if body is TileMapLayer:
+		match body.name:
+			"spikes":
+				emit_particle(eatParticles)
+			"instakill":
+				death()
 func _on_enemy_hitbox_body_exited(body: Node2D) -> void:
-	if body is TileMapLayer and body.name == "spikes":
-		emit_particle(bleedParticles)
+	if body is TileMapLayer:
+		match body.name:
+			"spikes":
+				bleedParticles.restart()
+				spike_1()

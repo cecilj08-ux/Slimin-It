@@ -34,13 +34,13 @@ func _physics_process(_delta: float) -> void:
 		if (left_ray.get_collider() is TileMapLayer or left_ray_2.get_collider() is TileMapLayer or left_ray_3.get_collider() is TileMapLayer) and (Input.is_action_pressed("left") and Input.is_action_pressed("down")):
 			if !(right_ray.get_collider() is TileMapLayer or right_ray_2.get_collider() is TileMapLayer or right_ray_3.get_collider() is TileMapLayer):
 				move_from_wall_pos = true
-				await get_tree().create_timer(.15).timeout
+				await get_tree().create_timer(.12).timeout
 				move_from_wall_pos = false
 			else: move_from_wall_neg = false
 		if (right_ray.get_collider() is TileMapLayer or right_ray_2.get_collider() is TileMapLayer or right_ray_3.get_collider() is TileMapLayer) and (Input.is_action_pressed("right") and Input.is_action_pressed("down")):
 			if !(left_ray.get_collider() is TileMapLayer or left_ray_2.get_collider() is TileMapLayer or left_ray_3.get_collider() is TileMapLayer):
 				move_from_wall_neg = true
-				await get_tree().create_timer(.15).timeout
+				await get_tree().create_timer(.12).timeout
 				move_from_wall_neg = false
 			else: move_from_wall_neg = false
 	else:
@@ -56,9 +56,8 @@ func _physics_process(_delta: float) -> void:
 
 func _integrate_forces(_state: PhysicsDirectBodyState2D) -> void:
 	if cancel_velocity: linear_velocity.x = 0
-	if move_from_wall_neg == true: linear_velocity.x = -69 #Nice
-	if move_from_wall_pos == true: linear_velocity.x = 69  #Nice
-	
+	if move_from_wall_neg: linear_velocity.x = -75
+	if move_from_wall_pos: linear_velocity.x = 75
 
 func _on_body_entered(body: Node) -> void:
 	if body is CharacterBody2D: body.speed *= ((body.scale.x/top_collision.scale.x)*0.5) if body.scale.x <= top_collision.scale.x else 1

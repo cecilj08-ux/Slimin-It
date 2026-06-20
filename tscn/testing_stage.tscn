@@ -10,7 +10,22 @@
 [ext_resource type="PackedScene" uid="uid://biqbr0yoxjp21" path="res://tscn/elements/door.tscn" id="8_q1v4l"]
 [ext_resource type="PackedScene" uid="uid://b0uyr5dgxj0r0" path="res://tscn/elements/button.tscn" id="9_sdxu8"]
 [ext_resource type="PackedScene" uid="uid://crfqdt0pbxmnx" path="res://tscn/elements/gate.tscn" id="10_vwrdv"]
-[ext_resource type="PackedScene" uid="uid://q25i057n0jd5" path="res://tscn/elements/player.tscn" id="11_qn8gg"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_t5tu6"]
+resource_local_to_scene = true
+friction = 0.5
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eqvky"]
+resource_local_to_scene = true
+friction = 0.5
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yfduc"]
+resource_local_to_scene = true
+friction = 0.5
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_x12kf"]
+resource_local_to_scene = true
+friction = 0.5
 
 [node name="world" type="Node2D" unique_id=1387651662]
 
@@ -53,28 +68,33 @@ activates = NodePath("../../door")
 position = Vector2(83, -70)
 
 [node name="enemy_slime2" parent="enemies" unique_id=937087587 instance=ExtResource("6_ryd50")]
-position = Vector2(-128, -69)
-scale = Vector2(1.2, 1.2)
+position = Vector2(-127, -71)
+scale = Vector2(1.414, 1.414)
 
 [node name="crates" type="Node2D" parent="." unique_id=617569523]
 
 [node name="crate" parent="crates" unique_id=146070000 instance=ExtResource("7_koqs3")]
 position = Vector2(-264, -77)
 scale = Vector2(3, 3)
+physics_material_override = SubResource("PhysicsMaterial_t5tu6")
 
 [node name="crate2" parent="crates" unique_id=1040855189 instance=ExtResource("7_koqs3")]
 position = Vector2(-160, -70)
+physics_material_override = SubResource("PhysicsMaterial_eqvky")
 
 [node name="crate3" parent="crates" unique_id=2059398006 instance=ExtResource("7_koqs3")]
 position = Vector2(-213, -76)
 scale = Vector2(2, 2)
+physics_material_override = SubResource("PhysicsMaterial_yfduc")
 
 [node name="crate4" parent="crates" unique_id=1523205285 instance=ExtResource("7_koqs3")]
 position = Vector2(-213, -91)
 scale = Vector2(1.5, 1.5)
+physics_material_override = SubResource("PhysicsMaterial_x12kf")
 
 [node name="door" parent="." unique_id=574512626 instance=ExtResource("8_q1v4l")]
 position = Vector2(0, -68)
+destination = "res://tscn/stages/world_selection.tscn"
 
 [node name="button" parent="." unique_id=192456169 node_paths=PackedStringArray("activates") instance=ExtResource("9_sdxu8")]
 position = Vector2(23, -68)
@@ -89,6 +109,3 @@ height = 3
 [node name="sign" parent="." unique_id=291798875 instance=ExtResource("4_qa7q2")]
 position = Vector2(-19, 4)
 writing = "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult it continues."
-
-[node name="player" parent="." unique_id=1218267728 instance=ExtResource("11_qn8gg")]
-position = Vector2(-20, -69)

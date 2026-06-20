@@ -11,6 +11,7 @@
 var target = null
 var can_jump := true
 var aggressive := false
+var dead := false
 
 func apply_gravity(delta: float) -> void:
 	velocity += get_gravity() * delta

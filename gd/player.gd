@@ -174,28 +174,31 @@ func _on_coyote_timer_timeout() -> void: was_on_wall = false
 
 func _on_player_hitbox_body_entered(body: Node2D) -> void:
 	if body is TileMapLayer:
-		if body.name == "ice":
-			can_stick = false
-			friction = 0
-			speed *= 1.2
-		elif body.name == "spikes":
-			emit_particle(eatParticles)
-		elif body.name == "instakill": death()
-		elif "hider" in body.name: body.visible = false
+		match body.name:
+			"ice":
+				can_stick = false
+				friction = 0
+				speed *= 1.2
+			"spikes":
+				emit_particle(eatParticles)
+			"instakill": death()
+		if "hider" in body.name: body.visible = false
 	elif body is Enemy:
-		if new_scale >= body.scale:
-			new_scale = calculate_vector_areas(new_scale, body.scale)
+		if new_scale >= body.new_scale:
+			new_scale = calculate_vector_areas(new_scale, body.new_scale)
 			camera.limit_bottom = get_tree().get_first_node_in_group("void").position.y-(new_scale.y*8)
-			emit_particle(eatParticles)
-			body.queue_free()
-		else: death(body)
+			body.death(self)
+		else:
+			body.new_scale = calculate_vector_areas(body.new_scale, scale)
+			death(body)
 func _on_player_hitbox_body_exited(body: Node2D) -> void:
 	if body is TileMapLayer:
-		if body.name == "ice":
-			can_stick = true
-			friction = 6
-			speed /= 1.2
-		elif body.name == "spikes":
-			bleedParticles.restart()
-			spike_1()
-		elif "hider" in body.name: body.visible = true
+		match body.name:
+			"ice":
+				can_stick = true
+				friction = 6
+				speed /= 1.2
+			"spikes":
+				bleedParticles.restart()
+				spike_1()
+		if "hider" in body.name: body.visible = true
