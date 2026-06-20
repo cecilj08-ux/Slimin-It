@@ -49,14 +49,14 @@ func _on_enter_box_body_entered(body: Node2D) -> void:
 	if body is Player and opened and body.new_scale <= scale and body.new_scale > Vector2(0.25,0.25):
 		Global.can_pause = false
 		get_tree().paused = true
-		Global.destination = destination_id
-		Global.p_scale = body.new_scale if get_tree().current_scene.has_meta("world_id") else Vector2.ONE
+		if get_tree().current_scene.scene_file_path != destination: Global.destination = destination_id
+		if get_tree().current_scene.scene_file_path != destination: Global.p_scale = body.new_scale if get_tree().current_scene.has_meta("world_id") else Vector2.ONE
 		await get_tree().create_timer(0.2).timeout
 		get_tree().paused = false
 		Global.can_pause = true
 		if get_tree().current_scene.scene_file_path == destination:
 			for i in get_parent().get_children():
-				if Global.destination == i.door_id:
+				if destination_id == i.door_id:
 					i.close()
 					body.position = i.position
 					body.velocity = Vector2.ZERO
