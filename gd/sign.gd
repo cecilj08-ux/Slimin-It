@@ -9,7 +9,12 @@ var reading := false
 @export var reading_time := 4
 @export var collapsing_time := 1
 
+@export_group("Time Trial")
+@export var time_trial_display: bool
+@export var time_trial_world: int
+
 func _ready() -> void:
+	if time_trial_display: writing = "Time Trial\nWorld " + str(time_trial_world) + " Best Time: " + ((str(SaveManager.save_game.trial_times[time_trial_world]) + "s") if SaveManager.save_game.trial_times[time_trial_world] != 0.0 else "Unattempted")
 	text.text = writing
 	text.visible_characters = 0
 

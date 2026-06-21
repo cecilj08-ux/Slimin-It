@@ -166,6 +166,7 @@ writing = "Stage 8"
 [node name="sign9" parent="signs" unique_id=431458264 instance=ExtResource("5_mw8sv")]
 position = Vector2(340, 4)
 writing = "Time Trial"
+time_trial_display = true
 
 [node name="player" parent="." unique_id=1218267728 instance=ExtResource("6_hik47")]
 position = Vector2(-64, 4)
