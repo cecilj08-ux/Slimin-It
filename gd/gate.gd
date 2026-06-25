@@ -10,7 +10,7 @@ var frozen_sprite := preload("res://resources/1bit slime platformer/gate_w.png")
 @export var close_speed := 120
 @export var inverted := false
 @export var frozen := false
-@export_category("World selector specific")
+@export_group("World selector specific")
 @export var world: int
 @export var stage: int
 @export var secret_stage: bool

@@ -3,7 +3,7 @@ class_name Door extends Sprite2D
 @export var door_id := 1
 @export var destination_id: int
 @export_file_path("*.tscn") var destination
-@export_category("World selector specific")
+@export_group("World selector specific")
 @export var world: int
 @export var stage: int
 @export var secret_stage: bool
