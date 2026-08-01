@@ -19,7 +19,7 @@ var friction := 6
 var speed := 120.0
 var direction := 0.0
 var lerpWeight := 0.0
-var charge_Jump := 0.0 
+var charge_Jump := 0.0
 
 var can_walk := true
 var can_jump := false
@@ -35,12 +35,12 @@ const crouch_sprite := preload("res://resources/1bit slime platformer/hybrid_bg/
 func apply_gravity(delta: float) -> void: velocity += get_gravity() * (delta if Input.is_action_pressed("up") else delta*3)
 
 func calculate_vector_areas(original: Vector2, added: Vector2, subtract := false) -> Vector2:
-	var original_area = original.x*original.y
-	var added_area = added.x*added.y
+	var original_area := original.x*original.y
+	var added_area := added.x*added.y
 	if subtract: added_area *= -1
 	return Vector2(sqrt(original_area+added_area), sqrt(original_area+added_area))
 
-func spike_1() -> void:
+func spiked() -> void:
 	if new_scale != Vector2(0,0):
 		if new_scale.x <= sqrt(3):
 			new_scale = calculate_vector_areas(new_scale, Vector2.ONE, true)
@@ -78,8 +78,7 @@ func death(cause = "unspecified") -> void:
 		Global.time_limit = 0.0
 		Global.time_taken = 0.0
 		get_tree().change_scene_to_file("res://tscn/stages/world_" + str(get_tree().current_scene.get_meta("world_id")[0]) + "/" + "stage_selection_" + str(get_tree().current_scene.get_meta("world_id")[0]) + ".tscn")
-	else:
-		get_tree().reload_current_scene.call_deferred()
+	else: get_tree().reload_current_scene.call_deferred()
 
 func emit_particle(particle: GPUParticles2D) -> void:
 	var emitted_particles := particle.duplicate()
@@ -200,5 +199,5 @@ func _on_player_hitbox_body_exited(body: Node2D) -> void:
 				speed /= 1.2
 			"spikes":
 				bleedParticles.restart()
-				spike_1()
+				spiked()
 		if "hider" in body.name: body.visible = true

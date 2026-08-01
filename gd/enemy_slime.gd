@@ -47,7 +47,7 @@ func death(cause = "unspecified") -> void:
 	await get_tree().create_timer(3).timeout
 	queue_free()
 
-func spike_1() -> void:
+func spiked() -> void:
 	if new_scale != Vector2(0,0):
 		if new_scale.x <= sqrt(3):
 			new_scale = calculate_vector_areas(new_scale, Vector2.ONE, true)
@@ -106,4 +106,4 @@ func _on_enemy_hitbox_body_exited(body: Node2D) -> void:
 		match body.name:
 			"spikes":
 				bleedParticles.restart()
-				spike_1()
+				spiked()
