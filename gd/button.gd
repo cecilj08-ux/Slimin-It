@@ -16,7 +16,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		#set_collision_layer_value(6, false)
 		sprite.frame = 1
 		if activates is Door: activates.open()
-		if activates is Gate: activates.opening = true
+		elif activates is Gate: activates.opening = true
+		elif activates is Node2D: activates.visible = not activates.visible
 		if one_shot:
 			await get_tree().create_timer(1.5).timeout
 			queue_free()
@@ -31,4 +32,5 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 		if not one_shot:
 			sprite.frame = 0
 			if activates is Door: activates.close()
-			if activates is Gate: activates.opening = false
+			elif activates is Gate: activates.opening = false
+			elif activates is Node2D: activates.visible = not activates.visible
