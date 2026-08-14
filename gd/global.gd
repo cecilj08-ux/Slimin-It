@@ -29,5 +29,5 @@ func _process(delta: float) -> void:
 		get_tree().reload_current_scene.call_deferred()
 	if Input.is_action_just_pressed("esc") and can_pause and not title_screen:
 		get_tree().paused = not get_tree().paused
+	elif !get_window().has_focus() and !get_tree().paused and can_pause and not title_screen: get_tree().paused = true
 	if time_trial: time_taken += (delta)
-		
