@@ -69,7 +69,8 @@ destination = "res://tscn/stages/world_0/stage_selection_0.tscn"
 
 [node name="door2" parent="doors" unique_id=596339234 instance=ExtResource("3_l6wsc")]
 position = Vector2(20, 28)
-door_id = 0
+door_id = 2
+destination = "res://tscn/stages/world_0/stage_selection_1.tscn"
 
 [node name="door3" parent="doors" unique_id=961284952 instance=ExtResource("3_l6wsc")]
 position = Vector2(68, 28)
@@ -112,8 +113,7 @@ writing = "World 0
 
 [node name="sign2" parent="signs" unique_id=310736985 instance=ExtResource("6_lq2k8")]
 position = Vector2(20, 4)
-writing = "World 1
-(coming soon)"
+writing = "World 1"
 
 [node name="sign3" parent="signs" unique_id=155795457 instance=ExtResource("6_lq2k8")]
 position = Vector2(68, 4)
